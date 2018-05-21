@@ -218,6 +218,10 @@ is_isbn_valid() {
 	isbn="$(echo "$1" | tr -d ' -' | tr '[:lower:]' '[:upper:]')"
 
 	if [ "${#isbn}" == "10" ]; then
+                # ignore duff isbn values of 0-9
+                if [ "${isbn}" = "0123456789" ]; then
+                        return 1
+                fi
 		for i in {0..9}; do
 			number="${isbn:$i:1}"
 			if [[ "$i" == "9" && "$number" == "X" ]]; then
